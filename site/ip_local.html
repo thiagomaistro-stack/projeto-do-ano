@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-light">
+  <h2>Meu IP Local</h2>
+
+  <button onclick="getIP()">Ver IP</button>
+
+  <p id="out"></p>
+</div>
+
+<script>
+async function getIP(){
+  let res = await fetch("/api/ip-local");
+  let data = await res.json();
+
+  document.getElementById("out").innerHTML =
+  "Host: " + data.hostname + "<br>IP: " + data.ip;
+}
+</script>
+
+{% endblock %}

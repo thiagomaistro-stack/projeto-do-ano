@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-light">
+  <h2>DNS Lookup</h2>
+
+  <input id="site" placeholder="www.google.com">
+  <button onclick="consultar()">Consultar</button>
+
+  <p id="resultado"></p>
+</div>
+
+<script>
+async function consultar(){
+  let site = document.getElementById("site").value;
+  let res = await fetch(`/api/dns?site=${site}`);
+  let data = await res.json();
+
+  document.getElementById("resultado").innerHTML =
+  "IP: " + data.ip;
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>NetTools Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <h2>NetTools</h2>
+  <a href="/">Home</a>
+  <a href="/dashboard">Dashboard</a>
+  <a href="/dns">DNS</a>
+  <a href="/ip-local">Meu IP</a>
+  <a href="/firewall">Firewall</a>
+  <a href="/privacy">Privacidade</a>
+  <a href="/terms">Termos</a>
+  <a href="/contact">Contato</a>
+  <a href="/login">Login</a>
+</nav>
+
+<div class="container">
+  {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

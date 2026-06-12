@@ -1,0 +1,48 @@
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
+
+/* NAV */
+.navbar{
+  background:#111827;
+  padding:15px;
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.navbar a{
+  color:white;
+  text-decoration:none;
+}
+
+/* CARDS CLAROS */
+.card-light{
+  background:#f8fafc;
+  color:black;
+  padding:20px;
+  margin:20px;
+  border-radius:10px;
+}
+
+/* CARDS ESCUROS */
+.card-dark{
+  background:#1e293b;
+  padding:20px;
+  margin:20px;
+  border-radius:10px;
+}
+
+.dark{
+  background:#0b1220;
+  padding:20px;
+}
+
+input, textarea{
+  width:100%;
+  margin:5px 0;
+  padding:10px;
+}
