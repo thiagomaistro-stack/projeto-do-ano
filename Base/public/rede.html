@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Scanner de Rede</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #0f172a;
+
+    color: white;
+
+    display: flex;
+
+    min-height: 100vh;
+}
+
+.sidebar {
+
+    width: 230px;
+
+    background: #020617;
+
+    padding: 25px 15px;
+}
+
+.logo {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.menu a {
+
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    padding: 13px;
+
+    border-radius: 8px;
+}
+
+.menu a:hover {
+
+    background: #1e293b;
+
+    color: white;
+}
+
+.content {
+
+    flex: 1;
+
+    padding: 50px;
+
+    max-width: 1000px;
+}
+
+button {
+
+    padding: 13px 20px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: #2563eb;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+button:disabled {
+
+    opacity: 0.5;
+
+    cursor: wait;
+}
+
+#status {
+
+    margin-top: 20px;
+
+    color: #facc15;
+}
+
+.network {
+
+    margin-top: 20px;
+
+    padding: 18px;
+
+    background: #1e293b;
+
+    border-radius: 10px;
+}
+
+.device {
+
+    margin-top: 10px;
+
+    padding: 15px;
+
+    background: #1e293b;
+
+    border: 1px solid #334155;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.ip {
+
+    color: #60a5fa;
+
+    font-family: monospace;
+
+    font-size: 16px;
+}
+
+.hostname {
+
+    color: #94a3b8;
+
+    margin-top: 5px;
+}
+
+.badge {
+
+    background: #16a34a;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+}
+
+@media (max-width: 700px) {
+
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .menu {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .content {
+        padding: 30px 20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<aside class="sidebar">
+
+<div class="logo">
+    🔧 Meu Painel
+</div>
+
+<nav class="menu">
+
+<a href="index.html">🏠 Início</a>
+
+<a href="ip.html">🌐 IP de Site</a>
+
+<a href="rede.html">🖥️ Scanner de Rede</a>
+
+</nav>
+
+</aside>
+
+
+<main class="content">
+
+<h1>🖥️ Scanner de Rede</h1>
+
+<p>
+Dispositivos encontrados na sua rede local.
+</p>
+
+
+<button id="scanButton" onclick="scan()">
+    Escanear minha rede
+</button>
+
+
+<div id="status"></div>
+
+<div id="network"></div>
+
+<div id="devices"></div>
+
+
+</main>
+
+
+<script>
+
+async function scan() {
+
+    const button =
+        document.getElementById("scanButton");
+
+    const status =
+        document.getElementById("status");
+
+    const network =
+        document.getElementById("network");
+
+    const devices =
+        document.getElementById("devices");
+
+
+    button.disabled = true;
+
+    status.textContent =
+        "Escaneando...";
+
+    network.innerHTML = "";
+
+    devices.innerHTML = "";
+
+
+    try {
+
+        const response =
+            await fetch("/api/scan");
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(data.error);
+
+        }
+
+
+        status.textContent =
+            data.devices.length +
+            " dispositivo(s) encontrado(s).";
+
+
+        network.innerHTML = `
+
+            <div class="network">
+
+                <strong>Seu IP:</strong>
+                ${data.local_ip}
+
+                <br><br>
+
+                <strong>Rede:</strong>
+                ${data.network}
+
+            </div>
+
+        `;
+
+
+        data.devices.forEach(device => {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "device";
+
+
+            element.innerHTML = `
+
+                <div>
+
+                    <div class="ip">
+                        ${device.ip}
+                    </div>
+
+                    <div class="hostname">
+                        ${
+                            device.hostname ||
+                            "Nome não identificado"
+                        }
+                    </div>
+
+                </div>
+
+                ${
+                    device.local
+                    ? '<div class="badge">ESTE PC</div>'
+                    : ''
+                }
+
+            `;
+
+
+            devices.appendChild(element);
+
+        });
+
+
+    } catch (error) {
+
+        status.textContent =
+            "Erro: " + error.message;
+
+    }
+
+
+    button.disabled = false;
+
+}
+
+</script>
+
+
+</body>
+
+</html>

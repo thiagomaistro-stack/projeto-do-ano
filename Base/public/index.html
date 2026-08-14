@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Meu Painel</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #0f172a;
+
+    color: white;
+
+    display: flex;
+
+    min-height: 100vh;
+}
+
+
+/* MENU */
+
+.sidebar {
+
+    width: 230px;
+
+    background: #020617;
+
+    padding: 25px 15px;
+
+    flex-shrink: 0;
+}
+
+.logo {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    margin-bottom: 35px;
+
+    text-align: center;
+}
+
+.menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.menu a {
+
+    text-decoration: none;
+
+    color: #cbd5e1;
+
+    padding: 13px;
+
+    border-radius: 8px;
+
+    transition: 0.2s;
+}
+
+.menu a:hover {
+
+    background: #1e293b;
+
+    color: white;
+}
+
+
+/* CONTEÚDO */
+
+.content {
+
+    flex: 1;
+
+    padding: 50px;
+
+    max-width: 1000px;
+}
+
+h1 {
+
+    margin-top: 0;
+
+    font-size: 32px;
+}
+
+.subtitle {
+
+    color: #94a3b8;
+
+    margin-bottom: 35px;
+}
+
+
+/* CARDS */
+
+.cards {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 20px;
+}
+
+.card {
+
+    background: #1e293b;
+
+    padding: 25px;
+
+    border-radius: 14px;
+
+    text-decoration: none;
+
+    color: white;
+
+    border: 1px solid #334155;
+
+    transition: 0.2s;
+}
+
+.card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #3b82f6;
+}
+
+.icon {
+
+    font-size: 35px;
+
+    margin-bottom: 15px;
+}
+
+.card h2 {
+
+    margin: 0 0 10px;
+}
+
+.card p {
+
+    color: #94a3b8;
+
+    line-height: 1.5;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+
+        width: 100%;
+
+        padding: 15px;
+    }
+
+    .logo {
+
+        margin-bottom: 15px;
+    }
+
+    .menu {
+
+        flex-direction: row;
+
+        justify-content: center;
+    }
+
+    .content {
+
+        padding: 30px 20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<aside class="sidebar">
+
+    <div class="logo">
+        🔧 Meu Painel
+    </div>
+
+    <nav class="menu">
+
+        <a href="index.html">
+            🏠 Início
+        </a>
+
+        <a href="ip.html">
+            🌐 IP de Site
+        </a>
+
+        <a href="rede.html">
+            🖥️ Scanner de Rede
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="content">
+
+    <h1>Meu Painel</h1>
+
+    <div class="subtitle">
+        Ferramentas de rede
+    </div>
+
+
+    <div class="cards">
+
+
+        <a class="card" href="ip.html">
+
+            <div class="icon">
+                🌐
+            </div>
+
+            <h2>IP de Site</h2>
+
+            <p>
+                Digite um domínio e descubra
+                os endereços IPv4 e IPv6
+                associados a ele.
+            </p>
+
+        </a>
+
+
+        <a class="card" href="rede.html">
+
+            <div class="icon">
+                🖥️
+            </div>
+
+            <h2>Scanner de Rede</h2>
+
+            <p>
+                Verifique os dispositivos
+                que respondem na sua rede
+                local.
+            </p>
+
+        </a>
+
+
+    </div>
+
+</main>
+
+
+</body>
+
+</html>

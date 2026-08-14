@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>IP de Site</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #0f172a;
+
+    color: white;
+
+    display: flex;
+
+    min-height: 100vh;
+}
+
+.sidebar {
+
+    width: 230px;
+
+    background: #020617;
+
+    padding: 25px 15px;
+}
+
+.logo {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.menu a {
+
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    padding: 13px;
+
+    border-radius: 8px;
+}
+
+.menu a:hover {
+
+    background: #1e293b;
+
+    color: white;
+}
+
+.content {
+
+    flex: 1;
+
+    padding: 50px;
+
+    max-width: 900px;
+}
+
+.box {
+
+    background: #1e293b;
+
+    padding: 25px;
+
+    border-radius: 12px;
+
+    margin-top: 25px;
+}
+
+.form {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+input {
+
+    flex: 1;
+
+    padding: 13px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: #334155;
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+button {
+
+    padding: 13px 20px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: #2563eb;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+button:hover {
+
+    background: #1d4ed8;
+}
+
+#result {
+
+    margin-top: 25px;
+}
+
+.ip {
+
+    font-family: monospace;
+
+    background: #0f172a;
+
+    padding: 10px;
+
+    margin-top: 8px;
+
+    border-radius: 6px;
+
+    color: #60a5fa;
+}
+
+.title {
+
+    color: #94a3b8;
+
+    margin-top: 20px;
+}
+
+.error {
+
+    color: #f87171;
+}
+
+@media (max-width: 700px) {
+
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .menu {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .content {
+        padding: 30px 20px;
+    }
+
+    .form {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<aside class="sidebar">
+
+<div class="logo">
+    🔧 Meu Painel
+</div>
+
+<nav class="menu">
+
+<a href="index.html">🏠 Início</a>
+
+<a href="ip.html">🌐 IP de Site</a>
+
+<a href="rede.html">🖥️ Scanner de Rede</a>
+
+</nav>
+
+</aside>
+
+
+<main class="content">
+
+<h1>🌐 IP de Site</h1>
+
+<p>
+Descubra os IPs associados a um domínio.
+</p>
+
+
+<div class="box">
+
+<div class="form">
+
+<input
+    id="url"
+    placeholder="exemplo.com"
+>
+
+<button onclick="lookup()">
+    Consultar
+</button>
+
+</div>
+
+
+<div id="result">
+</div>
+
+</div>
+
+</main>
+
+
+<script>
+
+async function lookup() {
+
+    const input =
+        document.getElementById("url").value.trim();
+
+    const result =
+        document.getElementById("result");
+
+
+    if (!input) {
+
+        result.innerHTML =
+            '<div class="error">Digite um domínio.</div>';
+
+        return;
+    }
+
+
+    result.innerHTML =
+        "Consultando...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/lookup?url=" +
+                encodeURIComponent(input)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(data.error);
+
+        }
+
+
+        let html = `
+            <div>
+                <strong>Domínio:</strong>
+                ${data.hostname}
+            </div>
+        `;
+
+
+        html += `
+            <div class="title">
+                IPv4
+            </div>
+        `;
+
+
+        if (data.ipv4.length) {
+
+            data.ipv4.forEach(ip => {
+
+                html += `
+                    <div class="ip">
+                        ${ip}
+                    </div>
+                `;
+
+            });
+
+        } else {
+
+            html += "Nenhum IPv4 encontrado.";
+
+        }
+
+
+        html += `
+            <div class="title">
+                IPv6
+            </div>
+        `;
+
+
+        if (data.ipv6.length) {
+
+            data.ipv6.forEach(ip => {
+
+                html += `
+                    <div class="ip">
+                        ${ip}
+                    </div>
+                `;
+
+            });
+
+        } else {
+
+            html += "Nenhum IPv6 encontrado.";
+
+        }
+
+
+        result.innerHTML = html;
+
+
+    } catch (error) {
+
+        result.innerHTML =
+            `<div class="error">
+                ${error.message}
+            </div>`;
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>
